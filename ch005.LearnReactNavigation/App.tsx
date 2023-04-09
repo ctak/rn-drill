@@ -6,44 +6,42 @@
  */
 
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import HomeScreen from './screens/HomeScreen';
-// import DetailScreen from './screens/DetailScreen';
-// import HeaderlessScreen from './screens/HeaderlessScreen';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-// import HomeScreen from './screens/HomeScreen';
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MainScreen from './screens/MainScreen';
+import DetailScreen from './screens/DetailScreen';
+const Stack = createNativeStackNavigator();
 
-// const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+function getHeaderTitle(route) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  const nameMap = {
+    Home: '홈',
+    Search: '검색',
+    Notification: '알림',
+    Message: '메시지',
+  };
 
-function HomeScreen({navigation}) {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  );
-}
-
-function SettingScreen({navigation}) {
-  return (
-    <View>
-      <Text>Setting</Text>
-    </View>
-  );
+  return nameMap[routeName];
 }
 
 function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        drawerPosition="left"
-        backBehavior="history">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Setting" component={SettingScreen} />
-      </Drawer.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          // options={{headerShown: false}}
+          options={({route}) => ({
+            title: getHeaderTitle(route),
+          })}
+        />
+        <Stack.Screen name="Detail" component={DetailScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
