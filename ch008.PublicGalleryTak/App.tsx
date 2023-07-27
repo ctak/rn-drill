@@ -1,12 +1,15 @@
 import React from 'react';
 import RootStack from './screens/RootStack';
 import {NavigationContainer} from '@react-navigation/native';
+import {UserContextProvider} from './contexts/UserContext';
 
 function App() {
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <UserContextProvider>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </UserContextProvider>
   );
 }
 
